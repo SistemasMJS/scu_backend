@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/register.php'));
 
             Route::middleware('api')
-                ->prefix('getters')
+                ->prefix('api')
                 ->group(base_path('routes/gettersRoutes.php'));
      
             Route::middleware('web')

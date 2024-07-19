@@ -1,15 +1,18 @@
 <?php
  
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
- 
+use App\Http\Controllers\Cruds\CallesController;
+use App\Http\Controllers\Cruds\ColoniasController;
+use App\Http\Controllers\Cruds\EntidadesController;
+use App\Http\Controllers\Cruds\MunicipiosController;
+use App\Http\Controllers\Cruds\SeccionalesController;
+
 Route::group([
     'middleware' => 'api'
 ], function ($router) {
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
-    Route::post('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
-    Route::post('/check-status', [AuthController::class, 'checkStatus'])->middleware('auth:api')->name('checkStatus');
+    Route::post('/getEntidades', [EntidadesController::class, 'getEntidades'])->name('getEntidades');
+    Route::post('/getMunicipios', [MunicipiosController::class, 'getMunicipios'])->name('getMunicipios');
+    Route::post('/getCalles', [CallesController::class, 'getCalles'])->name('getCalles');
+    Route::post('/getColonias', [ColoniasController::class, 'getColonias'])->name('getColonias');
+    Route::post('/getSeccionales', [SeccionalesController::class, 'getSeccionales'])->name('getSeccionales');
 });

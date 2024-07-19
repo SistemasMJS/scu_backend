@@ -11,16 +11,5 @@ use Illuminate\Support\Facades\Http;
 
 class RegisterController extends Controller
 {
-    public function getAdvances(Request $request)
-    {  
-        $firstName      = $request->json('firstName');        
-        $lastName       = $request->json('lastName');   
-        $name           = $request->json('name');   
-        $uniqueKey      = $request->json('uniqueKey');
-
-
-        $adv = DB::table('advance as a')                
-                    ->select('a.id')
-                    ->where('id',$firstName);
-    }
+    
 }
