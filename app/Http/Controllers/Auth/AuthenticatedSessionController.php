@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
@@ -13,19 +11,32 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(Request $request)
     {
-        $request->authenticate();
+        // dd($request);
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-        $request->session()->regenerate();
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
 
-        return response()->noContent();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return response()->json(['message' => 'Login successful'], 200);
+        }
+
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
 
@@ -33,6 +44,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return response()->noContent();
+        return response()->json(['message' => 'Logout successful'], 200);
+    }
+
+    public function checkStatus()
+    {      
+        if (Auth::check()) {
+            return response()->json(['user' => Auth::user(), 'ok' => true], 200);
+        }
+
+        return response()->json(['message' => 'Not authenticated', 'ok' => false], 401);
     }
 }
